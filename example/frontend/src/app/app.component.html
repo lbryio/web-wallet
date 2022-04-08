@@ -1,0 +1,14 @@
+<!--Desktop menu-->
+<!-- Identity service / storage access request -->
+<iframe
+  id="identity"
+  [src]="identityService.sanitizedIdentityServiceURL"
+  frameborder="0"
+  class="global__iframe"
+  [style.display]="globalVars.browserSupported ? 'none' : 'block'"
+></iframe>
+
+<!--p-0 is important here. Mobile UIs expect that there's no side padding.-->
+<div *ngIf="globalVars.browserSupported">
+  <router-outlet></router-outlet>
+</div>

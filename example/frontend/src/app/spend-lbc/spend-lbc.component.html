@@ -1,0 +1,88 @@
+<div class="container-lg border-left border-right landing__hero">
+  <div class="row">
+    <div class="col">
+      <div class="slide-up-2">
+        <a class="btn btn-primary landing__sign-up" (click)="testLoginLBRY()">
+          <div style="font-weight: bold; font-size: 20px;">
+            Log In
+          </div>
+        </a>
+      </div>
+    </div>
+    <div class="col">
+      <ng-container *ngIf="fromAddresses.length">
+        <b>From Addresses</b>: (TODO dropdown)
+          <ul>
+             <li *ngFor="let item of fromAddresses;">
+               <a target="_blank" href="https://explorer.lbry.com/find?q={{item}}">{{item}}</a>
+             </li>
+          </ul>
+        <br>
+        <br>
+        <b>To Address</b>: <input id="toAddress">
+        <br>
+        <br>
+        <b>Desired amount to spend</b>: <input id="desiredAmount">
+        <br>
+        <br>
+        <div class="slide-up-2">
+          <a class="btn btn-primary landing__sign-up" (click)="updatePsbt()">
+            <div style="font-weight: bold; font-size: 20px;">
+              Make PSBT
+            </div>
+          </a>
+        </div>
+      </ng-container>
+      <ng-container *ngIf="actualAmount">
+        <div style="overflow-wrap: break-word"><b>Actual amount to spend</b>: {{ actualAmount }}</div>
+        (including fees, based on input transaction(s) found. no change given)
+        <br>
+        <br>
+        <div style="overflow-wrap: break-word"><b>Fee</b>: {{ fee }}</div>
+        <br>
+        <div style="overflow-wrap: break-word"><b>psbtHex</b>: {{ psbtHex }}</div>
+        <br>
+        <div style="overflow-wrap: break-word">
+          <b>nonWitnessUtxoHexes</b>:
+          <ul>
+             <li *ngFor="let item of nonWitnessUtxoHexes;">
+               {{item}}
+             </li>
+          </ul>
+        </div>
+        <ng-container *ngIf="!lastErrorFull">
+          <div class="slide-up-2">
+            <a class="btn btn-primary landing__sign-up" (click)="testSignTransactionLBRY()">
+              <div style="font-weight: bold; font-size: 20px;">
+                Submit Payment
+              </div>
+            </a>
+          </div>
+        </ng-container>
+      </ng-container>
+      <ng-container *ngIf="signedTransactionHex">
+        <br>
+        <div style="overflow-wrap: break-word"><b>Signed Transaction Hex</b> (before submitting it for broadcast): {{ signedTransactionHex }}</div>
+        <br>
+      </ng-container>
+      <ng-container *ngIf="decodedTransaction">
+        <b>Decoded Signed Transaction</b> (before submitting it for broadcast):
+        <br>
+        <div style="white-space: pre; overflow-wrap: break-word">{{ decodedTransaction }}</div>
+        <br>
+      </ng-container>
+      <ng-container *ngIf="lastErrorFull">
+        <div>
+          <h1><font color="red">Error:</font></h1>
+          <h3><div style="white-space: pre; overflow-wrap: break-word">{{ lastError }}</div></h3>
+          <h2><font color="red">Details:</font></h2>
+          <div style="white-space: pre; overflow-wrap: break-word">{{ lastErrorFull }}</div>
+        </div>
+      </ng-container>
+      <ng-container *ngIf="success">
+          <h2><font color="green">I think it worked</font></h2>
+          <div style="white-space: pre; overflow-wrap: break-word">{{ success }}</div>
+      </ng-container>
+    </div>
+  </div>
+</div>
