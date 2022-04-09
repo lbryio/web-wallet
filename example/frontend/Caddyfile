@@ -31,18 +31,13 @@ header @html Content-Security-Policy "
     node.deso.org
     amp.deso.org
     bithunt.deso.org
-    bitclout.com:*
-    api.bitclout.com
-    bithunt.bitclout.com
     https://altumbase.com
     localhost:*
-    explorer.bitclout.com
     https://api.blockchain.com/ticker
     https://api.blockchain.com/mempool/fees
     https://ka-f.fontawesome.com/
     bitcoinfees.earn.com
     api.blockcypher.com
-    amp.bitclout.com
     api.testwyre.com
     api.sendwyre.com
     https://videodelivery.net
@@ -58,7 +53,6 @@ header @html Content-Security-Policy "
     data:
     i.imgur.com
     images.deso.org
-    images.bitclout.com
     quickchart.io
     arweave.net
     *.arweave.net
@@ -73,9 +67,6 @@ header @html Content-Security-Policy "
     identity.deso.org
     identity.deso.blue
     identity.deso.green
-    identity.bitclout.com
-    identity.bitclout.blue
-    identity.bitclout.green
     https://geo.captcha-delivery.com
     https://www.youtube.com
     https://youtube.com

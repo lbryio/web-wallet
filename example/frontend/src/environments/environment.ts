@@ -12,9 +12,6 @@ export const environment = {
   supportEmail: "",
   dd: {
     apiKey: "DCEB26AC8BF47F1D7B4D87440EDCA6",
-    jsPath: "https://bitclout.com/tags.js",
-    ajaxListenerPath: "bitclout.com/api",
-    endpoint: "https://bitclout.com/js/",
   },
   amplitude: {
     key: "",
@@ -24,6 +21,5 @@ export const environment = {
     id: 1,
     name: "DeSo",
     url: "https://node.deso.org",
-    logoAssetDir: "/assets/deso/",
   },
 };
