@@ -46,18 +46,13 @@ export class BackendAPIService {
     return this.post(path, {...body, ...{JWT: jwt}});
   }
 
-  // When SkipForLeaderboard is true, this endpoint only returns ProfileEntryResponse, IsGraylisted, IsBlacklisted,
-  //  IsAdmin, and IsSuperAdmin for each user.
-  // When SkipForLeaderboard is false, we also fetch the user's balance, profiles this user follows, hodlings,  and
-  //  UserMetadata. Oftentimes, this information is not needed and excluding it significantly improves performance.
   GetUsersStateless(
-    publicKeys: string[], SkipForLeaderboard: boolean = false,
+    publicKeys: string[]
   ): Observable<{ UserList: User[]}> {
     return this.httpClient.post<any>(
       `${this.endpoint}/get-users-stateless`,
       {
         PublicKeysBase58Check: publicKeys,
-        SkipForLeaderboard,
       },
     );
   }
@@ -66,7 +61,7 @@ export class BackendAPIService {
     publicKeys: string[]
   ): Observable<{[key: string]: string}> {
       const usernames: {[key: string]: any} = {};
-      const req = this.GetUsersStateless(publicKeys, true);
+      const req = this.GetUsersStateless(publicKeys);
       if (publicKeys.length > 0) {
         return req.pipe(
           map( res => {

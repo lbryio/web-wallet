@@ -274,7 +274,7 @@ export class ApproveComponent implements OnInit {
       return of(description);
     }
     // Otherwise, we hit get-users-stateless to fetch profiles.
-    return this.backendApi.GetUsersStateless(publicKeys, true).pipe((map(res => {
+    return this.backendApi.GetUsersStateless(publicKeys).pipe((map(res => {
       const userList = res.UserList;
       // If the response has no users, return the description as is.
       if (userList.length === 0) {
