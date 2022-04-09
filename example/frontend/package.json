@@ -29,7 +29,6 @@
     "@ethereumjs/common": "^2.5.0",
     "@ethereumjs/tx": "^3.3.2",
     "@ethereumjs/vm": "^5.5.3",
-    "amplitude-js": "^7.4.3",
     "assert": "^2.0.0",
     "autolinker": "^3.14.2",
     "bs58": "^4.0.1",
