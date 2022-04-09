@@ -17,7 +17,6 @@ export class GlobalVarsService {
   callback = '';
   callbackInvalid = false;
 
-
   constructor() { }
 
   inFrame(): boolean {
