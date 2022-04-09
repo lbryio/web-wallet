@@ -7,7 +7,6 @@ import {SigningService} from './signing.service';
 import {AccountService} from './account.service';
 import {CryptoService} from './crypto.service';
 import {GlobalVarsService} from './global-vars.service';
-import {UserProfile} from '../types/identity';
 
 export class ProfileEntryResponse {
   Username: string | null = null;
@@ -66,31 +65,29 @@ export class BackendAPIService {
     );
   }
 
-  GetUserProfiles(
+  GetUsernames(
     publicKeys: string[]
-  ): Observable<{[key: string]: UserProfile}> {
-      const userProfiles: {[key: string]: any} = {};
+  ): Observable<{[key: string]: string}> {
+      const usernames: {[key: string]: any} = {};
       const req = this.GetUsersStateless(publicKeys, true);
       if (publicKeys.length > 0) {
         return req.pipe(
           map( res => {
             for (const user of res.UserList) {
-              userProfiles[user.PublicKeyBase58Check] = {
-                username: user.ProfileEntryResponse?.Username,
-              };
+              usernames[user.PublicKeyBase58Check] = user.ProfileEntryResponse?.Username
             }
-            return userProfiles;
+            return usernames;
           })
         ).pipe(
           catchError(() => {
             for(const publicKey of publicKeys) {
-              userProfiles[publicKey] = {};
+              usernames[publicKey] = "";
             }
-            return of(userProfiles);
+            return of(usernames);
           })
         );
       } else {
-        return of(userProfiles);
+        return of(usernames);
       }
   }
 }

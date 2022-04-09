@@ -3,7 +3,6 @@ import {AccountService} from '../account.service';
 import {IdentityService} from '../identity.service';
 import {GlobalVarsService} from '../global-vars.service';
 import {BackendAPIService} from '../backend-api.service';
-import {UserProfile} from '../../types/identity';
 
 @Component({
   selector: 'app-log-in',
@@ -11,7 +10,7 @@ import {UserProfile} from '../../types/identity';
   styleUrls: ['./log-in.component.scss']
 })
 export class LogInComponent implements OnInit {
-  allUsers: {[key: string]: UserProfile} = {};
+  allUsernames: {[key: string]: string} = {};
   hasUsers = false;
 
   constructor(
@@ -25,9 +24,12 @@ export class LogInComponent implements OnInit {
     // Load profile pictures and usernames
     const publicKeys = this.accountService.getPublicKeys();
     this.hasUsers = publicKeys.length > 0;
-    this.backendApi.GetUserProfiles(publicKeys)
-      .subscribe(profiles => {
-        this.allUsers = profiles;
+    this.backendApi.GetUsernames(publicKeys)
+      .subscribe(usernames => {
+        // TODO - LBRY - probably gut this whole page, don't need to list
+        // users. we're not going to have a login history like this. but go
+        // over the html to make sure.
+        this.allUsernames = usernames;
       });
   }
 

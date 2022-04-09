@@ -13,10 +13,6 @@ export interface PublicUserInfo {
   accessLevelHmac: string;
 }
 
-export interface UserProfile {
-  username: string;
-}
-
 export enum Network {
   mainnet = 'mainnet',
   testnet = 'testnet',
