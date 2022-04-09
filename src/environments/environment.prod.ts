@@ -1,5 +1,5 @@
 export const environment = {
   production: true,
-  hostname: 'identity.deso.org',
-  nodeHostname: 'node.deso.org',
+  hostname: 'localhost:4201',
+  nodeHostname: 'node.deso.org', // TODO deleteme
 };

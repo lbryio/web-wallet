@@ -60,7 +60,7 @@ export class SpendLBCComponent implements OnInit {
     const toAddress = (<HTMLInputElement>document.getElementById("toAddress")).value;
     const desiredAmount = Number((<HTMLInputElement>document.getElementById("desiredAmount")).value);
 
-    this.backendApi.GetPsbt("localhost:8090", this.fromAddress, toAddress, desiredAmount).subscribe({
+    this.backendApi.GetPsbt(environment.backendHostname, this.fromAddress, toAddress, desiredAmount).subscribe({
       next: res => {
         this.psbtHex = res.psbtHex
         this.nonWitnessUtxoHexes = res.nonWitnessUtxoHex
@@ -99,14 +99,14 @@ export class SpendLBCComponent implements OnInit {
     this.globalVars.testSignTransactionLBRY(this.psbtHex, this.nonWitnessUtxoHexes, this.fromAddress).subscribe({
       next: (signedTransactionHex) => {
         this.signedTransactionHex = signedTransactionHex
-        this.backendApi.DecodeTransaction("localhost:8090", signedTransactionHex).subscribe({
+        this.backendApi.DecodeTransaction(environment.backendHostname, signedTransactionHex).subscribe({
           next: res => {
             this.decodedTransaction = res.decodedTransaction
             console.log(res.decodedTransaction)
           },
           error: err => { this.setError(err) }
         })
-        this.backendApi.BroadcastTransaction("localhost:8090", signedTransactionHex).subscribe({
+        this.backendApi.BroadcastTransaction(environment.backendHostname, signedTransactionHex).subscribe({
           next: res => {
             this.setError(null)
             this.success = res.txid
