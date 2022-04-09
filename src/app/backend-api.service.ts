@@ -50,12 +50,6 @@ export class BackendAPIService {
     return this.post(path, {...body, ...{JWT: jwt}});
   }
 
-  // Error parsing
-  stringifyError(err: any): string {
-    return err?.error?.error || JSON.stringify(err);
-  }
-
-
   // When SkipForLeaderboard is true, this endpoint only returns ProfileEntryResponse, IsGraylisted, IsBlacklisted,
   //  IsAdmin, and IsSuperAdmin for each user.
   // When SkipForLeaderboard is false, we also fetch the user's balance, profiles this user follows, hodlings,  and
