@@ -10,9 +10,6 @@ import {GlobalVarsService} from './global-vars.service';
 
 export class ProfileEntryResponse {
   Username: string | null = null;
-  Description: string | null = null;
-  ProfilePic?: string;
-  PublicKeyBase58Check?: string;
 }
 
 export class User {
