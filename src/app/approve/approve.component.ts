@@ -46,7 +46,7 @@ export class ApproveComponent implements OnInit {
   transactionHex: any;
   username: any;
   transactionDescription: any;
-  transactionDeSoSpent: string | boolean = false;
+  transactionSpent: string | boolean = false;
 
   constructor(
     private activatedRoute: ActivatedRoute,
@@ -61,9 +61,10 @@ export class ApproveComponent implements OnInit {
   ngOnInit(): void {
     this.activatedRoute.queryParams.subscribe(params => {
       this.transactionHex = params.tx;
-      this.backendApi.GetTransactionSpending(this.transactionHex).subscribe( res => {
-        this.transactionDeSoSpent = res ? this.nanosToUnitString(res) : false;
-      });
+
+      // TODO - for LBRY
+      this.transactionSpent = false;
+
       const txBytes = new Buffer(this.transactionHex, 'hex');
       this.transaction = Transaction.fromBytes(txBytes)[0];
       this.publicKey = this.base58KeyCheck(this.transaction.publicKey);

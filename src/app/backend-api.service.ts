@@ -93,24 +93,4 @@ export class BackendAPIService {
         return of(userProfiles);
       }
   }
-
-  GetTransactionSpending(
-    transactionHex: string
-  ): Observable<number> {
-    const req = this.httpClient.post<any>(
-      `${this.endpoint}/get-transaction-spending`,
-      {
-        TransactionHex: transactionHex,
-      },
-    );
-    return req.pipe(
-      map( res => {
-        return res.TotalSpendingNanos as number;
-      })
-    ).pipe(
-      catchError(() => {
-        return of(0);
-      })
-    );
-  }
 }
