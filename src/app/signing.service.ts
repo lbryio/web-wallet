@@ -1,9 +1,6 @@
 import { Injectable } from '@angular/core';
 import KeyEncoder from 'key-encoder';
 import * as jsonwebtoken from 'jsonwebtoken';
-import {CryptoService} from './crypto.service';
-import * as sha256 from 'sha256';
-import { uvarint64ToBuf } from '../lib/bindata/util';
 
 import * as bip32 from 'bip32';
 import { BIP32Interface } from 'bip32'; // TODO: Installed 2.0.6 instead of latest version, only because of weird typescript compilation stuff. Should probably get the latest.
@@ -18,9 +15,7 @@ const NETWORK = lbry.networks.mainnet
 })
 export class SigningService {
 
-  constructor(
-    private cryptoService: CryptoService,
-  ) { }
+  constructor() { }
 
   // this should be audited and go into a library. hobbled this together from
   // code in bitcoinjs-lib.
@@ -75,39 +70,29 @@ export class SigningService {
   }
 
   signJWT(seedHex: string): string {
+    return ""
+
+    // TODO - use bitcoinjs-lib and do an actual signature with the actual key in the wallet, send the identifier of the wallet over, etc etc etc.
+    // Assuming we want to keep this
+
     const keyEncoder = new KeyEncoder('secp256k1');
     const encodedPrivateKey = keyEncoder.encodePrivate(seedHex, 'raw', 'pem');
     return jsonwebtoken.sign({ }, encodedPrivateKey, { algorithm: 'ES256', expiresIn: 60 * 10 });
   }
 
   signAction(seedHex: string, actionHex: string): string {
+    return ""
+
     // TODO - use bitcoinjs-lib and do an actual signature with the actual key in the wallet, send the identifier of the wallet over, etc etc etc.
+
+    /*
     const privateKey = this.cryptoService.seedHexToPrivateKey(seedHex);
 
     const actionBytes = new Buffer(actionHex, 'hex');
     const actionHash = new Buffer(sha256.x2(actionBytes), 'hex');
     const signature = privateKey.sign(actionHash);
     return new Buffer(signature.toDER()).toString('hex');
-  }
-
-  signTransaction(seedHex: string, transactionHex: string): string {
-    const privateKey = this.cryptoService.seedHexToPrivateKey(seedHex);
-
-    const transactionBytes = new Buffer(transactionHex, 'hex');
-    const transactionHash = new Buffer(sha256.x2(transactionBytes), 'hex');
-    const signature = privateKey.sign(transactionHash);
-    const signatureBytes = new Buffer(signature.toDER());
-    const signatureLength = uvarint64ToBuf(signatureBytes.length);
-
-    const signedTransactionBytes = Buffer.concat([
-      // This slice is bad. We need to remove the existing signature length field prior to appending the new one.
-      // Once we have frontend transaction construction we won't need to do this.
-      transactionBytes.slice(0, -1),
-      signatureLength,
-      signatureBytes,
-    ]);
-
-    return signedTransactionBytes.toString('hex');
+    */
   }
 
 }

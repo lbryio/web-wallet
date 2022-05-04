@@ -3,7 +3,7 @@ import {ActivatedRoute} from '@angular/router';
 import {IdentityService} from '../identity.service';
 import {AccountService} from '../account.service';
 import {GlobalVarsService} from '../global-vars.service';
-import {SigningService} from '../signing.service';
+// import {SigningService} from '../signing.service';
 import {BackendAPIService, User} from '../backend-api.service';
 import {Observable, of} from 'rxjs';
 import {map} from 'rxjs/operators';
@@ -51,7 +51,7 @@ export class ApproveComponent implements OnInit {
     private identityService: IdentityService,
     private accountService: AccountService,
     public globalVars: GlobalVarsService,
-    private signingService: SigningService,
+    // private signingService: SigningService,
     private backendApi: BackendAPIService,
   ) { }
 
@@ -77,9 +77,11 @@ export class ApproveComponent implements OnInit {
   onSubmit(): void {
     // TODO
     throw "replace all of this transaction parsing and checking with bitcoinjs-lib."
+    /*
     const seedHex = ""
     const signedTransactionHex = this.signingService.signTransaction(seedHex, this.transactionHex);
     this.finishFlow(signedTransactionHex);
+    */
   }
 
   finishFlow(signedTransactionHex?: string): void {
