@@ -6,7 +6,7 @@ import {environment} from '../environments/environment';
   providedIn: 'root'
 })
 export class GlobalVarsService {
-  network = Network.mainnet;
+  network : Network = Network.MainNet;
   hostname = '';
   accessLevelRequest = AccessLevel.ApproveAll;
 

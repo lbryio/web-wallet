@@ -1,4 +1,5 @@
-import { Component, OnInit } from '@angular/core';
+import {AccountService} from '../account.service';
+import {Component, OnInit} from '@angular/core';
 import {SigningService} from '../signing.service';
 import {IdentityService} from '../identity.service';
 
@@ -18,6 +19,7 @@ export class TestSignComponent implements OnInit {
   privateKeyString: string = "thhUUVXQtyxonMaezCKwihLw9tZUrGJgWBMxDNfxoWub8dLGA"
 
   constructor(
+    private accountService: AccountService,
     private signingService: SigningService,
     private identityService: IdentityService,
   ) { }
@@ -34,7 +36,7 @@ export class TestSignComponent implements OnInit {
 
   finishFlow(signatureHex?: string): void {
     this.identityService.login({
-      users: {}, // TODO sigh
+      accounts: this.accountService.getPublicAccounts(),
       signatureHex,
     });
   }

@@ -1,9 +1,7 @@
 import {Component, ElementRef, OnInit, ViewChild} from '@angular/core';
-import {ActivatedRoute} from '@angular/router';
 import {CryptoService} from '../crypto.service';
 import {IdentityService} from '../identity.service';
 import {AccountService} from '../account.service';
-import {AccessLevel} from '../../types/identity';
 import {GlobalVarsService} from '../global-vars.service';
 
 @Component({
@@ -20,7 +18,6 @@ export class LogoutComponent implements OnInit {
 
 
   constructor(
-    private activatedRoute: ActivatedRoute,
     private cryptoService: CryptoService,
     private identityService: IdentityService,
     private accountService: AccountService,
@@ -28,9 +25,6 @@ export class LogoutComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    this.activatedRoute.queryParams.subscribe(params => {
-      this.publicKey = params.publicKey || '';
-    });
   }
 
   onCancel(): void {
@@ -39,7 +33,7 @@ export class LogoutComponent implements OnInit {
 
   onSubmit(): void {
     // We set the accessLevel for the logged out user to None.
-    this.accountService.setAccessLevel(this.publicKey, this.globalVars.hostname, AccessLevel.None);
+    this.accountService.resetAccessLevels(this.globalVars.hostname);
     // We reset the seed encryption key so that all existing accounts, except
     // the logged out user, will regenerate their encryptedSeedHex. Without this,
     // someone could have reused the encryptedSeedHex of an already logged out user.
@@ -49,7 +43,7 @@ export class LogoutComponent implements OnInit {
 
   finishFlow(): void {
     this.identityService.login({
-      users: this.accountService.getEncryptedUsers(),
+      accounts: this.accountService.getPublicAccounts(),
     });
   }
 

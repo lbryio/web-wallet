@@ -34,7 +34,7 @@ export class TestLbryLogInComponent implements OnInit {
 
   finishFlow(addresses: string[]): void {
     this.identityService.login({
-      users: {}, // TODO sigh
+      accounts: this.accountService.getPublicAccounts(),
       addresses,
     });
   }

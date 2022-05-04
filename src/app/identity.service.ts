@@ -1,7 +1,7 @@
 import {Injectable} from '@angular/core';
 import {Observable, Subject} from 'rxjs';
 import {v4 as uuid} from 'uuid';
-import {AccessLevel, PublicUserInfo} from '../types/identity';
+import {AccessLevel, PublicAccountInfo} from '../types/identity';
 import {CryptoService} from './crypto.service';
 import {GlobalVarsService} from './global-vars.service';
 import {CookieService} from 'ngx-cookie';
@@ -65,8 +65,8 @@ export class IdentityService {
   }
 
   login(payload: {
-    users: {[key: string]: PublicUserInfo},
-    publicKeyAdded?: string,
+    accounts: {[key: string]: PublicAccountInfo}, // Channel ids
+    accountNameAdded?: string, // Which channel id was just authorized. the app may allow the user to switch between them, but this determines which is on now.
     signedUp?: boolean
     signedTransactionHex?: string,
     addresses?: string[],

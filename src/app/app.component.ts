@@ -32,7 +32,7 @@ export class AppComponent implements OnInit {
     }
 
     if (params.get('testnet')) {
-      this.globalVars.network = Network.testnet;
+      this.globalVars.network = Network.TestNet;
     }
 
     // Callback should only be used in mobile applications, where payload is passed through URL parameters.
