@@ -165,40 +165,6 @@ export class CryptoService {
     return hmac === this.accessLevelHmac(accessLevel, seedHex);
   }
 
-  encryptedSeedHexToPrivateKey(encryptedSeedHex: string, domain: string): EC.KeyPair {
-    const seedHex = this.decryptSeedHex(encryptedSeedHex, domain);
-    return this.seedHexToPrivateKey(seedHex);
-  }
-
-  mnemonicToKeychain(mnemonic: string, extraText?: string, nonStandard?: boolean): HDNode {
-    const seed = bip39.mnemonicToSeedSync(mnemonic, extraText);
-    // @ts-ignore
-    return HDKey.fromMasterSeed(seed).derive('m/44\'/0\'/0\'/0/0', nonStandard);
-  }
-
-  keychainToSeedHex(keychain: HDNode): string {
-    return keychain.privateKey.toString('hex');
-  }
-
-  seedHexToPrivateKey(seedHex: string): EC.KeyPair {
-    const ec = new EC('secp256k1');
-    return ec.keyFromPrivate(seedHex);
-  }
-
-  privateKeyToDeSoPublicKey(privateKey: EC.KeyPair, network: Network): string {
-    const prefix = CryptoService.PUBLIC_KEY_PREFIXES[network].deso;
-    const key = privateKey.getPublic().encode('array', true);
-    const prefixAndKey = Uint8Array.from([...prefix, ...key]);
-
-    return bs58check.encode(prefixAndKey);
-  }
-
-  publicKeyToDeSoPublicKey(publicKey: EC.KeyPair, network: Network): string {
-    const prefix = CryptoService.PUBLIC_KEY_PREFIXES[network].deso;
-    const key = publicKey.getPublic().encode('array', true);
-    return bs58check.encode(Buffer.from([...prefix, ...key]));
-  }
-
   // Decode public key base58check to Buffer of secp256k1 public key
   publicKeyToECBuffer(publicKey: string): Buffer {
     // Sanity check similar to Base58CheckDecodePrefix from core/lib/base58.go
