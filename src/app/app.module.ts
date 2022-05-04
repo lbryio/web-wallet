@@ -18,7 +18,6 @@ import {EntropyService} from './entropy.service';
 import { LogInComponent } from './log-in/log-in.component';
 import {HttpClientModule} from '@angular/common/http';
 import { ApproveComponent } from './approve/approve.component';
-import { LoadSeedComponent } from './load-seed/load-seed.component';
 import { ErrorCallbackComponent } from './error-callback/error-callback.component';
 import { NgxIntlTelInputModule } from 'ngx-intl-tel-input';
 import { MatTooltipModule } from '@angular/material/tooltip';
@@ -36,7 +35,6 @@ import { TestLbryLogInComponent } from './test-lbry-log-in/test-lbry-log-in.comp
     SignUpComponent,
     LogInComponent,
     ApproveComponent,
-    LoadSeedComponent,
     ErrorCallbackComponent,
     TestSignComponent,
     TestSignTransactionComponent,
