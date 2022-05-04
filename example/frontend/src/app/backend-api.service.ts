@@ -174,6 +174,8 @@ export class BackendApiService {
   }
 
   jwtPost(endpoint: string, path: string, publicKey: string, body: any): Observable<any> {
+    // TODO - we may not need this method
+    // see notes in: (identity) src/app/identity.service.ts
     const request = this.identityService.jwt({
       ...this.identityService.identityServiceParamsForKey(publicKey),
     });

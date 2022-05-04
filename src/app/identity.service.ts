@@ -96,6 +96,12 @@ export class IdentityService {
   }
 
   private handleJwt(data: any): void {
+    // Give a permission token that expires in 10 minutes. DeSo apps use it for
+    // things like image uploading. Creation of this token is subject to same
+    // access level requirements as actions and transactions.
+    // TODO - make this work with LBRY. Or, nix it if we know we don't need it.
+    // Perhaps this will actually *be* our "actions"?
+
     if (!this.approve(data, AccessLevel.ApproveAll)) {
       return;
     }
