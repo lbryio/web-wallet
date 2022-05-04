@@ -19,16 +19,6 @@ export class CryptoService {
     private globalVars: GlobalVarsService
     ) {}
 
-  // TODO - LBRY?
-  static PUBLIC_KEY_PREFIXES = {
-    mainnet: {
-      deso: [0xcd, 0x14, 0x0],
-    },
-    testnet: {
-      deso: [0x11, 0xc2, 0x0],
-    }
-  };
-
   // Safari only lets us store things in cookies
   mustUseStorageAccess(): boolean {
     // Webviews have full control over storage access
