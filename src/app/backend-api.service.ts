@@ -1,10 +1,8 @@
-import { Injectable } from '@angular/core';
+import {Injectable} from '@angular/core';
 import {HttpClient} from '@angular/common/http';
 import {Observable, of} from 'rxjs';
 import {catchError, map} from 'rxjs/operators';
 import {environment} from '../environments/environment';
-import {SigningService} from './signing.service';
-import {AccountService} from './account.service';
 import {CryptoService} from './crypto.service';
 import {GlobalVarsService} from './global-vars.service';
 
@@ -26,24 +24,11 @@ export class BackendAPIService {
   constructor(
     private httpClient: HttpClient,
     private cryptoService: CryptoService,
-    private signingService: SigningService,
-    private accountService: AccountService,
     private globalVars: GlobalVarsService,
   ) { }
 
   post(path: string, body: any): Observable<any> {
     return this.httpClient.post<any>(`${this.endpoint}/${path}`, body);
-  }
-
-  jwtPost(path: string, publicKey: string, body: any): Observable<any> {
-    const publicUserInfo = this.accountService.getEncryptedUsers()[publicKey];
-    if (!publicUserInfo) {
-      return of(null);
-    }
-
-    const seedHex = this.cryptoService.decryptSeedHex(publicUserInfo.encryptedSeedHex, this.globalVars.hostname);
-    const jwt = this.signingService.signJWT(seedHex);
-    return this.post(path, {...body, ...{JWT: jwt}});
   }
 
   GetUsersStateless(
