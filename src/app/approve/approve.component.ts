@@ -1,6 +1,5 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {ActivatedRoute} from '@angular/router';
-import {CryptoService} from '../crypto.service';
 import {IdentityService} from '../identity.service';
 import {AccountService} from '../account.service';
 import {GlobalVarsService} from '../global-vars.service';
@@ -33,7 +32,6 @@ import {
   TransactionMetadataDAOCoin,
   TransactionMetadataTransferDAOCoin
 } from '../../lib/deso/transaction';
-import bs58check from 'bs58check';
 
 @Component({
   selector: 'app-approve',
@@ -50,7 +48,6 @@ export class ApproveComponent implements OnInit {
 
   constructor(
     private activatedRoute: ActivatedRoute,
-    private cryptoService: CryptoService,
     private identityService: IdentityService,
     private accountService: AccountService,
     public globalVars: GlobalVarsService,
@@ -78,7 +75,10 @@ export class ApproveComponent implements OnInit {
   }
 
   onSubmit(): void {
-    const signedTransactionHex = this.signingService.signTransaction(this.seedHex(), this.transactionHex);
+    // TODO
+    throw "replace all of this transaction parsing and checking with bitcoinjs-lib."
+    const seedHex = ""
+    const signedTransactionHex = this.signingService.signTransaction(seedHex, this.transactionHex);
     this.finishFlow(signedTransactionHex);
   }
 
@@ -87,11 +87,6 @@ export class ApproveComponent implements OnInit {
       users: this.accountService.getEncryptedUsers(),
       signedTransactionHex,
     });
-  }
-
-  seedHex(): string {
-    const encryptedSeedHex = this.accountService.getEncryptedUsers()[this.publicKey].encryptedSeedHex;
-    return this.cryptoService.decryptSeedHex(encryptedSeedHex, this.globalVars.hostname);
   }
 
   generateTransactionDescription(): void {
@@ -253,8 +248,11 @@ export class ApproveComponent implements OnInit {
   }
 
   base58KeyCheck(keyBytes: Uint8Array): string {
-    const prefix = CryptoService.PUBLIC_KEY_PREFIXES[this.globalVars.network].deso;
-    return bs58check.encode(Buffer.from([...prefix, ...keyBytes]));
+    // TODO
+    throw "replace all of this transaction parsing and checking with bitcoinjs-lib."
+    return ""
+    // const prefix = CryptoService.PUBLIC_KEY_PREFIXES[this.globalVars.network as Network].deso;
+    // return bs58check.encode(Buffer.from([...prefix, ...keyBytes]));
   }
 
   hexNanosToUnitString(nanos: Buffer): string {
