@@ -1,6 +1,5 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
 import {EntropyService} from '../entropy.service';
-import {CryptoService} from '../crypto.service';
 import {AccountService} from '../account.service';
 import {IdentityService} from '../identity.service';
 import {GlobalVarsService} from '../global-vars.service';
@@ -19,7 +18,7 @@ export class SignUpComponent implements OnInit, OnDestroy {
   seedCopied = false;
   mnemonicCheck = '';
   extraTextCheck = '';
-  publicKeyAdded = '';
+  accountNameAdded = '';
 
   // Advanced tab
   showMnemonicError = false;
@@ -32,7 +31,6 @@ export class SignUpComponent implements OnInit, OnDestroy {
 
   constructor(
     public entropyService: EntropyService,
-    private cryptoService: CryptoService,
     private accountService: AccountService,
     private identityService: IdentityService,
     public globalVars: GlobalVarsService,
@@ -81,17 +79,23 @@ export class SignUpComponent implements OnInit, OnDestroy {
   ////// STEP TWO BUTTONS ///////
 
   stepTwoNext(): void {
+    // TODO - signup for LBRY will be very different from DeSo. We'll need to
+    // make a wallet, not just "users". And other things happen.
+    throw 'signup not implemented'
+
+    /*
     const network = this.globalVars.network;
     const mnemonic = this.mnemonicCheck;
     const extraText = this.extraTextCheck;
     const keychain = this.cryptoService.mnemonicToKeychain(mnemonic, extraText);
 
-    this.publicKeyAdded = this.accountService.addUser(keychain, mnemonic, extraText, network);
+    this.accountNameAdded = this.accountService.addUser(keychain, mnemonic, extraText, network);
 
     this.accountService.setAccessLevel(
-      this.publicKeyAdded, this.globalVars.hostname, this.globalVars.accessLevelRequest);
+      this.accountNameAdded, this.globalVars.hostname, this.globalVars.accessLevelRequest);
 
     this.login();
+    */
   }
 
   stepTwoBack(): void {
@@ -102,8 +106,8 @@ export class SignUpComponent implements OnInit, OnDestroy {
 
   login(): void {
     this.identityService.login({
-      users: this.accountService.getEncryptedUsers(),
-      publicKeyAdded: this.publicKeyAdded,
+      accounts: this.accountService.getPublicAccounts(),
+      accountNameAdded: this.accountNameAdded,
       signedUp: true,
     });
   }
