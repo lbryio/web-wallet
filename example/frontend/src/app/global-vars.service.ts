@@ -73,7 +73,7 @@ export class GlobalVarsService {
 
   testLoginLBRY() : Observable<string[]> {
     return new Observable(subscriber => {
-      this.identityService.launch("/test-lbry-log-in", {}).subscribe((res) => {
+      this.identityService.launch("/log-in-wallet", {}).subscribe((res) => {
         // TODO - maybe we want public key instead of address? we should, as DeSo did, have a list of users with everything we need from them.
         subscriber.next(res.addresses)
         subscriber.complete()

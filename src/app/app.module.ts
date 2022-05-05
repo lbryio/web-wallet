@@ -15,7 +15,7 @@ import { BannerComponent } from './banner/banner.component';
 import { SignUpComponent } from './sign-up/sign-up.component';
 import {AccountService} from './account.service';
 import {EntropyService} from './entropy.service';
-import { LogInComponent } from './log-in/log-in.component';
+import { LogInAppComponent } from './log-in-app/log-in-app.component';
 import {HttpClientModule} from '@angular/common/http';
 import { ApproveComponent } from './approve/approve.component';
 import { ErrorCallbackComponent } from './error-callback/error-callback.component';
@@ -23,7 +23,7 @@ import { NgxIntlTelInputModule } from 'ngx-intl-tel-input';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { TestSignComponent } from './test-sign/test-sign.component';
 import { TestSignTransactionComponent } from './test-sign-transaction/test-sign-transaction.component';
-import { TestLbryLogInComponent } from './test-lbry-log-in/test-lbry-log-in.component'
+import { LogInWalletComponent } from './log-in-wallet/log-in-wallet.component'
 
 @NgModule({
   declarations: [
@@ -33,12 +33,12 @@ import { TestLbryLogInComponent } from './test-lbry-log-in/test-lbry-log-in.comp
     LogoutComponent,
     BannerComponent,
     SignUpComponent,
-    LogInComponent,
+    LogInAppComponent,
     ApproveComponent,
     ErrorCallbackComponent,
     TestSignComponent,
     TestSignTransactionComponent,
-    TestLbryLogInComponent,
+    LogInWalletComponent,
   ],
   imports: [
     BrowserModule,

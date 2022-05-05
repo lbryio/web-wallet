@@ -3,15 +3,12 @@ import {AccountService} from '../account.service';
 import {IdentityService} from '../identity.service';
 import {GlobalVarsService} from '../global-vars.service';
 
-// This is logging into the app, not the wallet sync
-// TODO rename this component to app-log-in
-
 @Component({
-  selector: 'app-log-in',
-  templateUrl: './log-in.component.html',
-  styleUrls: ['./log-in.component.scss']
+  selector: 'app-log-in-app',
+  templateUrl: './log-in-app.component.html',
+  styleUrls: ['./log-in-app.component.scss']
 })
-export class LogInComponent implements OnInit {
+export class LogInAppComponent implements OnInit {
   allAccountNames: {[key: string]: string} = {};
 
   constructor(

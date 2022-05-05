@@ -6,19 +6,16 @@ import {Router} from '@angular/router';
 import {RouteNames} from '../app-routing.module';
 import {of} from 'rxjs';
 
-// This is logging into the wallet sync, not the app
-// TODO rename this component to wallet-sync-log-in
-
 // This component handles two ways of logging in:
 // * Wallet Sync (currently commented out)
 // * Paste Wallet (temporary measure for initial version)
 
 @Component({
-  selector: 'app-test-lbry-log-in',
-  templateUrl: './test-lbry-log-in.component.html',
-  styleUrls: ['./test-lbry-log-in.component.scss']
+  selector: 'app-log-in-wallet',
+  templateUrl: './log-in-wallet.component.html',
+  styleUrls: ['./log-in-wallet.component.scss']
 })
-export class TestLbryLogInComponent implements OnInit {
+export class LogInWalletComponent implements OnInit {
   walletDumpInitial = this.getWalletDumpInitial();
 
   loginError = '';
@@ -82,7 +79,7 @@ export class TestLbryLogInComponent implements OnInit {
         this.loginUsername = '';
         this.loginPassword = '';
 
-        this.router.navigate(['/', RouteNames.LOG_IN], {queryParamsHandling: 'merge'});
+        this.router.navigate(['/', RouteNames.LOG_IN_APP], {queryParamsHandling: 'merge'});
       }),
       (() => {
         this.loginError = "Login Error. Try again?"
@@ -104,7 +101,7 @@ export class TestLbryLogInComponent implements OnInit {
 
     throw "fix me"
     // For now, we'll just pick the first channel in the wallet and log right in
-    // this.router.navigate(['/', RouteNames.LOG_IN], {queryParamsHandling: 'merge'});
+    // this.router.navigate(['/', RouteNames.LOG_IN_APP], {queryParamsHandling: 'merge'});
   }
 
 }
