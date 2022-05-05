@@ -49,6 +49,17 @@ export class AppComponent implements OnInit {
 
     if (this.globalVars.callback) {
       // If callback is set, we won't be sending the initialize message.
+
+      // TODO - Why is it being set to 'localhost'? Seems arbitrary. Seems
+      // like we need this set to the correct value?
+      //
+      // It could be a ui security problem. we say "`this.globalVars.hostname`
+      // wants to do `transaction`". If it's set to "localhost" they might get
+      // the wrong idea. Or maybe I have no idea what this actually means.
+      // Or maybe localhost is actually safe since it's unlikely enough that
+      // somebody would be trying to pwn themselves from localhost.
+      throw "figure this out or delete this code branch"
+
       this.globalVars.hostname = 'localhost';
       this.finishInit();
     } else if (this.globalVars.webview || this.globalVars.inTab || this.globalVars.inFrame()) {
