@@ -102,7 +102,9 @@ export class TestLbryLogInComponent implements OnInit {
     const wallet = JSON.parse(walletStr)
     this.cryptoService.putWallet(this.globalVars.hostname, wallet);
 
-    this.router.navigate(['/', RouteNames.LOG_IN], {queryParamsHandling: 'merge'});
+    throw "fix me"
+    // For now, we'll just pick the first channel in the wallet and log right in
+    // this.router.navigate(['/', RouteNames.LOG_IN], {queryParamsHandling: 'merge'});
   }
 
 }

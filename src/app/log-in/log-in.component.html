@@ -1,15 +1,23 @@
 <app-banner></app-banner>
 
+<!--
+TODO - Unused for now. Revamp this page to be a channel picker for logging in
+-->
+
 <div class="container home-container text-center" *ngIf="globalVars.inTab || globalVars.webview">
   <div class="mb-20px">
-    <span class="title-text">Log in to {{ globalVars.hostname }}</span>
+    <span class="title-text">Choose an account to share with {{ globalVars.hostname }}</span>
   </div>
 
-  <div class="d-flex flex-column" *ngIf="hasUsers">
+  <!--
+  Wallet Sync Login redirects to here, like load-seed did. Now we choose which account to log in with.
+  -->
+
+  <div class="d-flex flex-column" *ngIf="allAccountNames.length">
     <ul class="list-group mt-7px mb-30px saved-seeds-list">
       <span class="saved-seeds-header d-flex align-items-center"><span>Select an account</span></span>
       <div class="saved-seeds-scroll">
-        <li *ngFor="let item of allUsernames | keyvalue" class="list-group-item list-group-item-action cursor-pointer saved-seed" (click)="selectAccount(item.key)">
+        <li *ngFor="let item of allAccountNames | keyvalue" class="list-group-item list-group-item-action cursor-pointer saved-seed" (click)="selectAccount(item.key)">
           <div class="w-100">
             <div *ngIf="!item.value" class="text-truncate">{{ item.key }}&hellip;</div>
             <div *ngIf="item.value" class="d-flex align-items-center">
@@ -20,11 +28,18 @@
       </div>
     </ul>
   </div>
+
   <div class="d-flex align-items-center flex-column">
+    <!--
+    Hmm... Maybe sign-up remains a TODO.
+    -->
     <button class="button button-large button-secondary mb-40px" [routerLink]="['/sign-up']">
       <span class="font-weight-normal">Sign up with DeSo seed</span>
     </button>
-    <a class="link" [routerLink]="['/load-seed']"><u>Log in with DeSo seed</u></a>
+    <!--
+    Go back to Wallet Sync Login page
+    -->
+    <a class="link" [routerLink]="['/test-lbry-log-in']"><u>Wallet Sync Log In</u></a>
   </div>
 
   <div>
@@ -32,6 +47,11 @@
       Logging in grants <b>{{ globalVars.hostname }}</b> access to:
     </div>
 
+    <!--
+    Generate a list of permissions on the ts side, show them here. Not hard coded.
+
+    But this is a TODO. Starting version doesn't have access levels.
+    -->
     <ul class="list-group list-group-flush mt-15px">
       <li class="list-group-item">
         <span *ngIf="globalVars.accessLevelRequest >= 2">✅</span>
