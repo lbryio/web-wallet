@@ -36,7 +36,7 @@ export class TestSignComponent implements OnInit {
 
   finishFlow(signatureHex?: string): void {
     this.identityService.login({
-      accounts: this.accountService.getPublicAccounts(),
+      channels: this.accountService.getChannels(),
       signatureHex,
     });
   }

@@ -86,7 +86,7 @@ export class ApproveComponent implements OnInit {
 
   finishFlow(signedTransactionHex?: string): void {
     this.identityService.login({
-      accounts: this.accountService.getPublicAccounts(),
+      channels: this.accountService.getChannels(),
       signedTransactionHex,
     });
   }

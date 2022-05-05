@@ -18,14 +18,14 @@ export class LogInAppComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    // TODO - Will be channel claim IDs
-    this.allAccountNames = this.accountService.getAccountNames();
+    // TODO - Will hopefully be channel claim IDs but I don't know what will be available in reality
+    // this.allAccountNames = ...
   }
 
   selectAccount(accountName: string): void {
     this.accountService.setAccessLevel(accountName, this.globalVars.hostname, this.globalVars.accessLevelRequest);
     this.identityService.login({
-      accounts: this.accountService.getPublicAccounts(),
+      channels: this.accountService.getChannels(),
       accountNameAdded: accountName,
       signedUp: false
     });

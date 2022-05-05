@@ -106,7 +106,7 @@ export class SignUpComponent implements OnInit, OnDestroy {
 
   login(): void {
     this.identityService.login({
-      accounts: this.accountService.getPublicAccounts(),
+      channels: this.accountService.getChannels(),
       accountNameAdded: this.accountNameAdded,
       signedUp: true,
     });

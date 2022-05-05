@@ -43,7 +43,7 @@ export class LogoutComponent implements OnInit {
 
   finishFlow(): void {
     this.identityService.login({
-      accounts: this.accountService.getPublicAccounts(),
+      channels: this.accountService.getChannels(),
     });
   }
 

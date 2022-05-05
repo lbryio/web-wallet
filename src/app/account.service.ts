@@ -1,7 +1,7 @@
 import {Injectable} from '@angular/core';
 import {CryptoService} from './crypto.service';
 import {GlobalVarsService} from './global-vars.service';
-import {AccessLevel, PrivateAccountInfo, PublicAccountInfo} from '../types/identity';
+import {AccessLevel, PrivateAccountInfo, PublicChannelInfo} from '../types/identity';
 
 @Injectable({
   providedIn: 'root'
@@ -16,45 +16,46 @@ export class AccountService {
 
   // Public Getters
 
-  getAccountNames(): any {
-    // TODO - maybe write this in a safer, more future-perfect way since it's converting
-    // private to public
-    return Object.keys(this.getWalletAccounts());
-  }
-
   // TODO - As of this writing, we want to share channel claim ids with the
   // account on login, and spending addresses on request (probably with
   // explicit permission)
-  //
-  // This is in a state in between what DeSo had and what
-  // we want ultimately for LBRY.
-  getPublicAccounts(): {[key: string]: PublicAccountInfo} {
-    const hostname = this.globalVars.hostname;
+  getChannels(): {[key: string]: PublicChannelInfo} {
+    // TODO - will want for accessLevel stuff
+    // const hostname = this.globalVars.hostname;
+
     const privateAccounts = this.getWalletAccounts();
-    const publicAccounts: {[key: string]: PublicAccountInfo} = {};
+    const channels: {[key: string]: PublicChannelInfo} = {};
 
     for (const name of Object.keys(privateAccounts)) {
       const privateAccount = privateAccounts[name];
-      const accessLevel = this.getAccessLevel(name, hostname);
-      if (accessLevel === AccessLevel.None) {
-        continue;
+      for (const channelPubKeyAddress of Object.keys(privateAccount.certificates)) {
+        // TODO - For LBRY's purposes, not only will we want per-channel access
+        // levels, we'll want per channel per hostname per action access levels.
+
+        // TODO - finish when we have accessLevel stuff
+        /*
+        const accessLevel = this.getAccessLevel(name, hostname);
+        if (accessLevel === AccessLevel.None) {
+          continue;
+        }
+
+        // TODO - Implement the hmac properly
+        // TODO - why do we even have hmac if everything's in local storage anyway?
+        const accessLevelHmac = this.cryptoService.accessLevelHmac(accessLevel, privateAccount.seed);
+        */
+
+        channels[channelPubKeyAddress] = {
+          pubKeyAddress: channelPubKeyAddress,
+          network: privateAccount.ledger,
+
+          // TODO - fill in when we have accessLevel stuff
+          accessLevel: 0,
+          accessLevelHmac: "",
+        };
       }
-
-      // TODO
-      throw 'Implement the hmac properly'
-
-      // TODO - why do we even have hmac if everything's in local storage anyway? 
-      const accessLevelHmac = this.cryptoService.accessLevelHmac(accessLevel, privateAccount.seed);
-
-      publicAccounts[name] = {
-        name,
-        network: privateAccount.ledger,
-        accessLevel,
-        accessLevelHmac,
-      };
     }
 
-    return publicAccounts;
+    return channels;
   }
 
   // TODO - Need to confirm that this works I think

@@ -36,9 +36,9 @@ export interface PrivateAccountInfo {
 }
 
 // can be sent to the app
-export interface PublicAccountInfo {
+export interface PublicChannelInfo {
   // TODO - add more useful stuff
-  name: string;
+  pubKeyAddress: string;
   network: Network;
   accessLevel: AccessLevel;
   accessLevelHmac: string;
