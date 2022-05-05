@@ -37,7 +37,10 @@ export class SigningService {
     return bip32.fromBase58(account.private_key).privateKey || null;
   }
 
-  getAddresses(wallet: any): string[] {
+  // Does this belong in identity.service next to getChannels? or does
+  // getChannels belong here next to this?
+  /*
+  private getSpendingAddresses(wallet: any): string[] {
     return wallet.accounts
     // won't venture into deterministic yet
     .filter((account: any) => account.address_generator.name === 'single-address')
@@ -46,6 +49,7 @@ export class SigningService {
       return this.getAddressFromBip32(node)
     })
   }
+  */
 
   signPSBT(psbtHex: string, nonWitnessUtxoHexes: string[], signingKey: Buffer): string {
     const keyPair = ecpair.ECPair.fromPrivateKey(signingKey, { network: NETWORK })
