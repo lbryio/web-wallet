@@ -1,3 +1,51 @@
-<p>
-  <b>wallet me</b>: <textarea id="wallet" rows="20" cols="150"></textarea><button type="button" (click)="saveWallet()">Go.</button>
-</p>
+<app-banner></app-banner>
+
+<div class="page-container" *ngIf="globalVars.inTab || globalVars.webview || globalVars.callback">
+
+  <!--
+  <div class="title-text">
+    Log into the LBRY wallet sync service
+  </div>
+
+  <p class="main-text mb-20px">
+    Log in to {{ globalVars.environment.walletSyncHostname }}:
+  </p>
+
+  <div *ngIf="loginError" class="alert alert-danger mt-15px">
+    {{ loginError }}
+  </div>
+
+  <div class="text-input-container">
+    <textarea [(ngModel)]="loginUsername"
+              class="text-input"
+              rows="4"
+              placeholder="Username"></textarea>
+  </div>
+
+  <div class="text-input-container">
+    <textarea [(ngModel)]="loginPassword"
+              class="text-input"
+              rows="4"
+              placeholder="Password"></textarea>
+  </div>
+
+  <button (click)="clickLogin()"
+          class="button button-primary button-large">
+    Log In
+  </button>
+
+  <hr>
+  -->
+
+  <div class="title-text">
+    Paste your wallet directly
+  </div>
+
+  <p>
+    <textarea [value]="walletDumpInitial" id="wallet-dump" rows="20" cols="150"></textarea>
+    <button (click)="loginWithWalletDump()"
+            class="button button-primary button-large">
+      Log In
+    </button>
+  </p>
+</div>

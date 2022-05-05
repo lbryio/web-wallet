@@ -19,6 +19,8 @@ export class User {
   providedIn: 'root'
 })
 export class BackendAPIService {
+  walletSyncEndpoint = `https://${environment.walletSyncHostname}/api/v0`;
+
   endpoint = `https://${environment.nodeHostname}/api/v0`;
 
   constructor(
@@ -66,5 +68,35 @@ export class BackendAPIService {
       } else {
         return of(usernames);
       }
+  }
+
+  // TODO - WIP, not using for now.
+  
+  // This isn't what the current wallet sync API looks like, but it will
+  // likely change anyway. So this is an approximation with a stub for the time being.
+  WalletSyncLogin(
+    username: string,
+    password: string,
+  ): Observable<{bodyJson: string, signature: string} | null> {
+
+    // A stub for now
+    const wallet : object | null = this.cryptoService.getWallet(this.globalVars.hostname);
+    if (wallet === null) {
+      return of(null)
+    }
+
+    return of({
+      bodyJson: JSON.stringify(wallet, null, 2),
+      signature: "",
+    })
+
+    // Later we'll do something like this...
+    return this.httpClient.post<any>(
+      `${this.walletSyncEndpoint}/log-in`,
+      {
+        username: username,
+        password: password,
+      },
+    );
   }
 }

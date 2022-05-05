@@ -1,12 +1,9 @@
 import { Injectable } from '@angular/core';
-import HDNode from 'hdkey';
-import * as bip39 from 'bip39';
-import HDKey from 'hdkey';
 import {ec as EC} from 'elliptic';
 import bs58check from 'bs58check';
 import {CookieService} from 'ngx-cookie';
 import {createHmac, createCipher, createDecipher, randomBytes} from 'crypto';
-import {AccessLevel, Network} from '../types/identity';
+import {AccessLevel, PrivateAccountInfo} from '../types/identity';
 import { GlobalVarsService } from './global-vars.service';
 
 @Injectable({
@@ -76,7 +73,8 @@ export class CryptoService {
     }
   }
 
-  getWallet(hostname: string): object | null {
+  // TODO define a wallet type, and/or use a type defined by json-schema
+  getWallet(hostname: string): {accounts: [PrivateAccountInfo]} | null {
     const storageKey = this.walletStorageKey(hostname);
     let walletStr
     if (this.mustUseStorageAccess()) {
@@ -168,5 +166,17 @@ export class CryptoService {
     const publicKeyEC = ec.keyFromPublic(payload, 'array');
 
     return new Buffer(publicKeyEC.getPublic('array'));
+  }
+
+  // TODO check that the signature for the walletStr is valid
+  checkSig(walletStr: string, walletSignature: string): boolean {
+    throw "implement me"
+    return true
+  }
+
+  // TODO find errors in the wallet. missing fields, etc. json-schema
+  validateWallet(wallet: object): string | null {
+    throw "implement me"
+    return null
   }
 }
