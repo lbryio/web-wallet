@@ -7,7 +7,17 @@ export const environment = {
   hostname: 'localhost:4201',
   nodeHostname: 'node.deso.org',  // TODO deleteme
   walletSyncHostname: 'localhost:8091',
-  hubHostname: '', // TODO put me in a config file, or make this whole file a config file
+  hubHostnames: [
+    'spv11.lbry.com:50001',
+    'spv12.lbry.com:50001',
+    'spv13.lbry.com:50001',
+    'spv14.lbry.com:50001',
+    'spv15.lbry.com:50001',
+    'spv16.lbry.com:50001',
+    'spv17.lbry.com:50001',
+    'spv18.lbry.com:50001',
+    'spv19.lbry.com:50001',
+  ]
 };
 
 /*

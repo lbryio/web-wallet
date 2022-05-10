@@ -7,11 +7,16 @@ import {environment} from '../environments/environment';
   providedIn: 'root'
 })
 export class HubService {
-  hubEndpoint = `https://${environment.hubHostname}/api/v0`;
+  hubEndpoint = '';
 
   constructor(
     private httpClient: HttpClient,
-  ) { }
+  ) {
+    const hubHostname = environment.hubHostnames[
+      Math.floor(Math.random() * environment.hubHostnames.length)
+    ];
+    this.hubEndpoint = `https://${hubHostname}`;
+  }
 
   post(path: string, body: any): Observable<any> {
     return this.httpClient.post<any>(`${this.hubEndpoint}/${path}`, body);
