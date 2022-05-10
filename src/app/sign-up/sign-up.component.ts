@@ -83,6 +83,11 @@ export class SignUpComponent implements OnInit, OnDestroy {
     throw 'signup not implemented'
 
     /*
+
+    // this is a mix of some of what DeSo left over, and some new LBRY.id
+    // specific things that I figure we won't want to forget. This is just
+    // a guide for the future when we tackle signup.
+
     const network = this.globalVars.network;
     const mnemonic = this.mnemonicCheck;
     const extraText = this.extraTextCheck;
@@ -90,8 +95,7 @@ export class SignUpComponent implements OnInit, OnDestroy {
 
     const accountNameAdded = this.accountService.addUser(keychain, mnemonic, extraText, network);
 
-    this.accountService.setAccessLevel(
-      accountNameAdded, this.globalVars.hostname, this.globalVars.accessLevelRequest);
+    this.accountService.initAccess()
 
     this.login();
     */

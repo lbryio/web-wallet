@@ -1,17 +1,9 @@
 <app-banner></app-banner>
 
-<!--
-TODO - Unused for now. Revamp this page to be a channel picker for logging in
--->
-
 <div class="container home-container text-center" *ngIf="globalVars.inTab || globalVars.webview">
   <div class="mb-20px">
-    <span class="title-text">Choose an account to share with {{ globalVars.hostname }}</span>
+    <span class="title-text">Choose a channel to share with {{ globalVars.hostname }}</span>
   </div>
-
-  <!--
-  Wallet Sync Login redirects to here, like load-seed did. Now we choose which account to log in with.
-  -->
 
   <div class="d-flex flex-column" *ngIf="hasChannels">
     <ul class="list-group mt-7px mb-30px saved-seeds-list">
@@ -20,7 +12,10 @@ TODO - Unused for now. Revamp this page to be a channel picker for logging in
         <li *ngFor="let item of allChannels | keyvalue" class="list-group-item list-group-item-action cursor-pointer saved-seed" (click)="selectAccount(item.key)">
           <div class="w-100">
             <div *ngIf="item.value" class="d-flex align-items-center">
-              <div class="text-truncate">{{ item.value.handle }}</div>
+              <b>{{ item.value.handle }}</b>
+              &nbsp;
+              &nbsp;
+              <i>(#{{ item.value.claimId }})</i>
             </div>
           </div>
         </li>
@@ -28,50 +23,27 @@ TODO - Unused for now. Revamp this page to be a channel picker for logging in
     </ul>
   </div>
 
+  <button class="button button-large button-secondary mb-40px" [routerLink]="['/log-in-wallet']">
+    <span class="font-weight-normal">Go back to Wallet Log In</span>
+  </button>
+
   <div class="d-flex align-items-center flex-column">
     <!--
     Hmm... Maybe sign-up remains a TODO.
     -->
     <button class="button button-large button-secondary mb-40px" [routerLink]="['/sign-up']">
-      <span class="font-weight-normal">Sign up with DeSo seed</span>
+      <span class="font-weight-normal">Create a new Wallet</span>
     </button>
-    <!--
-    Go back to Wallet Sync Login page
-    -->
-    <a class="link" [routerLink]="['/log-in-wallet']"><u>Wallet Sync Log In</u></a>
   </div>
 
   <div>
     <div class="fs-18px mt-30px">
-      Logging in grants <b>{{ globalVars.hostname }}</b> access to:
+      Logging in grants <b>{{ globalVars.hostname }}</b> access to your public
+      channel information. As you use the site, you will perform actions (such
+      as leaving a comment or spending LBC) that will bring you back here to
+      get your permission. At that point, you will have the option to give the
+      app permission to perform the same sort of action again without bringing
+      up another popup.
     </div>
-
-    <!--
-    Generate a list of permissions on the ts side, show them here. Not hard coded.
-
-    But this is a TODO. Starting version doesn't have access levels.
-    -->
-    <ul class="list-group list-group-flush mt-15px">
-      <li class="list-group-item">
-        <span *ngIf="globalVars.accessLevelRequest >= 2">✅</span>
-        <span *ngIf="globalVars.accessLevelRequest < 2">❌</span>
-        My basic information
-        <div class="fs-14px text-muted"><b>{{ globalVars.hostname }}</b> can access my public key and any other public information</div>
-      </li>
-      <li class="list-group-item">
-        <span *ngIf="globalVars.accessLevelRequest >= 3">✅</span>
-        <span *ngIf="globalVars.accessLevelRequest < 3">❌</span>
-        Post, message, like, and follow on my behalf
-        <div class="fs-14px text-muted" *ngIf="globalVars.accessLevelRequest < 3"><b>{{ globalVars.hostname }}</b> will require approval to post, message, like, and follow</div>
-        <div class="fs-14px text-muted" *ngIf="globalVars.accessLevelRequest >= 3"><b>{{ globalVars.hostname }}</b> may post, message, like, and follow without requiring approval</div>
-      </li>
-      <li class="list-group-item">
-        <span *ngIf="globalVars.accessLevelRequest === 4">✅</span>
-        <span *ngIf="globalVars.accessLevelRequest < 4">❌</span>
-        Buy, sell, and send coins on my behalf
-        <div class="fs-14px text-muted" *ngIf="globalVars.accessLevelRequest < 4"><b>{{ globalVars.hostname }}</b> will require approval to buy, sell, or send coins</div>
-        <div class="fs-14px text-muted" *ngIf="globalVars.accessLevelRequest === 4"><b>{{ globalVars.hostname }}</b> may buy, sell, and send coins without requiring approval</div>
-      </li>
-    </ul>
   </div>
 </div>

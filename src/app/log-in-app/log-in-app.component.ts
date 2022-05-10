@@ -26,6 +26,12 @@ export class LogInAppComponent implements OnInit {
 
   selectAccount(channelClaimId: string): void {
     this.accountService.setAccessCurrentChannel(this.globalVars.hostname, channelClaimId)
+    // At this point, DeSo had globalVars.accessLevelRequest, where the app
+    // would specify which access level it would be operating with, and the
+    // user would grant permission on login. We could do something similar: The
+    // app could specify which sorts of actions it will be likely asking
+    // permission for. The user could specify on login "don't bother asking my
+    // permission for these actions" so they never get a popup for it.
 
     this.identityService.login({
       channel: this.accountService.getActiveChannel(this.globalVars.hostname),

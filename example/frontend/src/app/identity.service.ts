@@ -50,7 +50,6 @@ export class IdentityService {
       nonWitnessUtxoHexes?: string,
       fromAddress?: string,
       public_key?: string;
-      accessLevelRequest?: number;
     }
   ): Observable<any> {
     let url = this.identityServiceURL as string;
@@ -90,10 +89,6 @@ export class IdentityService {
 
     if (params?.public_key) {
       httpParams = httpParams.append("public_key", params.public_key);
-    }
-
-    if (params?.accessLevelRequest) {
-      httpParams = httpParams.append("accessLevelRequest", params.accessLevelRequest.toString());
     }
 
     const paramsStr = httpParams.toString();

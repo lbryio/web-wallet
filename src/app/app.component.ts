@@ -22,11 +22,6 @@ export class AppComponent implements OnInit {
     // load params
     const params = new URLSearchParams(window.location.search);
 
-    const accessLevelRequest = params.get('accessLevelRequest');
-    if (accessLevelRequest) {
-      this.globalVars.accessLevelRequest = parseInt(accessLevelRequest, 10);
-    }
-
     if (params.get('webview')) {
       this.globalVars.webview = true;
     }
