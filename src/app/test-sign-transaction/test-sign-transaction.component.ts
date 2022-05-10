@@ -2,8 +2,7 @@ import {AccountService} from '../account.service';
 import {Component, OnInit} from '@angular/core';
 import {SigningService} from '../signing.service';
 import {IdentityService} from '../identity.service';
-import {CryptoService} from '../crypto.service';
-import { GlobalVarsService } from '../global-vars.service';
+import {GlobalVarsService} from '../global-vars.service';
 
 @Component({
   selector: 'app-test-sign-transaction',
@@ -18,7 +17,6 @@ export class TestSignTransactionComponent implements OnInit {
     private accountService: AccountService,
     private signingService: SigningService,
     private identityService: IdentityService,
-    private cryptoService: CryptoService,
     private globalVars: GlobalVarsService,
   ) { }
 
@@ -28,7 +26,7 @@ export class TestSignTransactionComponent implements OnInit {
     const fromAddress = params.get("fromAddress") || ""
     const nonWitnessUtxoHexes = params.get("nonWitnessUtxoHexes") || null
 
-    const wallet : object | null = this.cryptoService.getWallet(this.globalVars.hostname);
+    const wallet : object | null = this.accountService.getWallet();
     const signingKey = this.signingService.getSigningKey(wallet, fromAddress)
 
     // TODO what if error? etc etc.
@@ -41,7 +39,7 @@ export class TestSignTransactionComponent implements OnInit {
 
   finishFlow(signedTransactionHex?: string): void {
     this.identityService.login({
-      channels: this.accountService.getChannels(),
+      channel: this.accountService.getActiveChannel(this.globalVars.hostname),
       signedTransactionHex,
     });
   }

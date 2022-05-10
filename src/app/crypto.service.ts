@@ -1,101 +1,32 @@
 import { Injectable } from '@angular/core';
 import {ec as EC} from 'elliptic';
 import bs58check from 'bs58check';
-import {CookieService} from 'ngx-cookie';
 import {createHmac, createCipher, createDecipher, randomBytes} from 'crypto';
-import {AccessLevel, PrivateAccountInfo} from '../types/identity';
-import { GlobalVarsService } from './global-vars.service';
+import {AccessLevel} from '../types/identity';
 
 @Injectable({
   providedIn: 'root'
 })
 export class CryptoService {
 
-  constructor(
-    private cookieService: CookieService,
-    private globalVars: GlobalVarsService
-    ) {}
-
-  // Safari only lets us store things in cookies
-  mustUseStorageAccess(): boolean {
-    // Webviews have full control over storage access
-    if (this.globalVars.webview) {
-      return false;
-    }
-
-    const supportsStorageAccess = typeof document.hasStorageAccess === 'function';
-    const isChrome = navigator.userAgent.indexOf('Chrome') > -1;
-    const isSafari = !isChrome && navigator.userAgent.indexOf('Safari') > -1;
-
-    // Firefox and Edge support the storage access API but do not enforce it.
-    // For now, only use cookies if we support storage access and use Safari.
-    const mustUseStorageAccess = supportsStorageAccess && isSafari;
-
-    return mustUseStorageAccess;
-  }
+  constructor() {}
 
   // 32 bytes = 256 bits is plenty of entropy for encryption
   newEncryptionKey(): string {
     return randomBytes(32).toString('hex');
   }
 
+  // TODO we won't need this soon right?
   seedHexEncryptionStorageKey(hostname: string): string {
     return `seed-hex-key-${hostname}`;
-  }
-
-  // Alternate plan is to use this same system, but instead of encrypting the
-  // seed and sending it back and forth, we do the wallet. It may be superior
-  // because at most times the decrypted wallet is not accessible anywhere
-  // without sending a message between the app and identity service. But we'd
-  // have to trust that we'll never accidentally send the wallet to the app
-  // unencrypted.
-  walletStorageKey(hostname: string): string {
-    return `wallet-key-${hostname}`;
-  }
-
-  hasWallet(hostname: string): boolean {
-    const storageKey = this.walletStorageKey(hostname);
-
-    if (this.mustUseStorageAccess()) {
-      return !!this.cookieService.get(storageKey);
-    } else {
-      return !!localStorage.getItem(storageKey);
-    }
   }
 
   hasSeedHexEncryptionKey(hostname: string): boolean {
     const storageKey = this.seedHexEncryptionStorageKey(hostname);
 
-    if (this.mustUseStorageAccess()) {
-      return !!this.cookieService.get(storageKey);
-    } else {
-      return !!localStorage.getItem(storageKey);
-    }
+    return !!localStorage.getItem(storageKey);
   }
 
-  // TODO define a wallet type, and/or use a type defined by json-schema
-  getWallet(hostname: string): {accounts: [PrivateAccountInfo]} | null {
-    const storageKey = this.walletStorageKey(hostname);
-    let walletStr
-    if (this.mustUseStorageAccess()) {
-      walletStr = this.cookieService.get(storageKey);
-    } else {
-      walletStr = localStorage.getItem(storageKey);
-    }
-    return JSON.parse(walletStr || 'null')
-  }
-
-  putWallet(hostname: string, wallet: object | null) {
-    const storageKey = this.walletStorageKey(hostname);
-
-    if (this.mustUseStorageAccess()) {
-      this.cookieService.put(storageKey, JSON.stringify(wallet), {
-        expires: new Date('2100/01/01 00:00:00'),
-      });
-    } else {
-      localStorage.setItem(storageKey, JSON.stringify(wallet));
-    }
-  }
 
   // Place a seed encryption key in storage. If reset is set to true, the
   // previous key is overwritten, which is useful in logging out users.
@@ -103,20 +34,10 @@ export class CryptoService {
     const storageKey = this.seedHexEncryptionStorageKey(hostname);
     let encryptionKey;
 
-    if (this.mustUseStorageAccess()) {
-      encryptionKey = this.cookieService.get(storageKey);
-      if (!encryptionKey || reset) {
-        encryptionKey = this.newEncryptionKey();
-        this.cookieService.put(storageKey, encryptionKey, {
-          expires: new Date('2100/01/01 00:00:00'),
-        });
-      }
-    } else {
-      encryptionKey = localStorage.getItem(storageKey) || '';
-      if (!encryptionKey || reset) {
-        encryptionKey = this.newEncryptionKey();
-        localStorage.setItem(storageKey, encryptionKey);
-      }
+    encryptionKey = localStorage.getItem(storageKey) || '';
+    if (!encryptionKey || reset) {
+      encryptionKey = this.newEncryptionKey();
+      localStorage.setItem(storageKey, encryptionKey);
     }
 
     // If the encryption key is unset or malformed we need to stop

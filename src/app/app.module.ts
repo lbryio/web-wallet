@@ -9,7 +9,6 @@ import { EmbedComponent } from './embed/embed.component';
 import { HomeComponent } from './home/home.component';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {IdentityService} from './identity.service';
-import {CookieModule} from 'ngx-cookie';
 import { LogoutComponent } from './logout/logout.component';
 import { BannerComponent } from './banner/banner.component';
 import { SignUpComponent } from './sign-up/sign-up.component';
@@ -50,7 +49,6 @@ import { LogInWalletComponent } from './log-in-wallet/log-in-wallet.component'
     NgxIntlTelInputModule,
     MatFormFieldModule,
     MatTooltipModule,
-    CookieModule.forRoot()
   ],
   providers: [
     IdentityService,

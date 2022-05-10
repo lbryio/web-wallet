@@ -4,7 +4,6 @@ import {v4 as uuid} from 'uuid';
 import {AccessLevel, PublicChannelInfo} from '../types/identity';
 import {CryptoService} from './crypto.service';
 import {GlobalVarsService} from './global-vars.service';
-import {CookieService} from 'ngx-cookie';
 import {SigningService} from './signing.service';
 import {HttpParams} from '@angular/common/http';
 
@@ -24,10 +23,28 @@ export class IdentityService {
   constructor(
     private cryptoService: CryptoService,
     private globalVars: GlobalVarsService,
-    private cookieService: CookieService,
     private signingService: SigningService,
   ) {
     window.addEventListener('message', (event) => this.handleMessage(event));
+  }
+
+  // Safari only lets us store things in cookies
+  mustUseStorageAccess(): boolean {
+    // Webviews have full control over storage access
+    // TODO why do we trust the app to send this properly
+    if (this.globalVars.webview) {
+      return false;
+    }
+
+    const supportsStorageAccess = typeof document.hasStorageAccess === 'function';
+    const isChrome = navigator.userAgent.indexOf('Chrome') > -1;
+    const isSafari = !isChrome && navigator.userAgent.indexOf('Safari') > -1;
+
+    // Firefox and Edge support the storage access API but do not enforce it.
+    // For now, only use cookies if we support storage access and use Safari.
+    const mustUseStorageAccess = supportsStorageAccess && isSafari;
+
+    return mustUseStorageAccess;
   }
 
   // Outgoing Messages
@@ -41,8 +58,7 @@ export class IdentityService {
   }
 
   login(payload: {
-    channels: {[key: string]: PublicChannelInfo},
-    accountNameAdded?: string, // Which channel id was just authorized. the app may allow the user to switch between them, but this determines which is on now.
+    channel: PublicChannelInfo | null,
     signedUp?: boolean
     signedTransactionHex?: string,
     addresses?: string[],
@@ -118,7 +134,7 @@ export class IdentityService {
   private async handleInfo(event: MessageEvent): Promise<void> {
     // check storage access API
     let hasStorageAccess = true;
-    if (this.cryptoService.mustUseStorageAccess()) {
+    if (this.mustUseStorageAccess()) {
       hasStorageAccess = await document.hasStorageAccess();
     }
 
@@ -130,15 +146,37 @@ export class IdentityService {
       hasLocalStorageAccess = false;
     }
 
-    // check for cookie access
-    this.cookieService.put('deso-test-access', 'true');
-    const hasCookieAccess = !!this.cookieService.get('deso-test-access');
+    // TODO - Sort out the storage access issue:
+    //
+    // There was a part of the code that was defaulting to cookies if
+    // this.mustUseStorageAccess() was true (only applies to Safari). I don't
+    // want to do that because I'm afraid the data we'll be storing won't fit.
+    // So, I'm going to consider browsers with this.mustUseStorageAccess() as
+    // unsupported until we can get back and figure out why DeSo chose to go
+    // with cookies for those cases.
+    //
+    // It looks like the issue is that Safari only supports saving in cookies
+    // (per the comment above this.mustUseStorageAccess(), which I moved from
+    // DeSo's crypto.service). If that's the case, I don't understand how it
+    // was able to save users and levels in the identity service. Someone who
+    // understands should look into that.
+    //
+    // PERHAPS it's that DeSo only strictly need certain things to be in
+    // localStorage, and everything else (like the encryption key) could fit
+    // in the cookie. Maybe we could store the wallet sync password in the
+    // cookie and reconstruct the wallet and channels on start. The problem
+    // would be resetting the access levels each time. Maybe that will just
+    // be the cost of using Safari.
+    //
+    // See:
+    // https://github.com/deso-protocol/identity/blob/0543c40cb4e7e39cc9098554f99c27649e3d1d03/src/app/crypto.service.ts#L36
+    // https://github.com/deso-protocol/identity/blob/0543c40cb4e7e39cc9098554f99c27649e3d1d03/src/app/identity.service.ts#L261
+    // https://github.com/deso-protocol/identity/pull/50/
 
     // store if browser is supported or not
-    this.browserSupported = hasCookieAccess || hasLocalStorageAccess;
+    this.browserSupported = hasLocalStorageAccess && !this.mustUseStorageAccess();
 
     this.respond(event.data.id, {
-      hasCookieAccess,
       hasStorageAccess,
       hasLocalStorageAccess,
       browserSupported: this.browserSupported,

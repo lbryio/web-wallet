@@ -1,5 +1,6 @@
 import {AccountService} from '../account.service';
 import {Component, OnInit} from '@angular/core';
+import {GlobalVarsService} from '../global-vars.service';
 import {SigningService} from '../signing.service';
 import {IdentityService} from '../identity.service';
 
@@ -20,6 +21,7 @@ export class TestSignComponent implements OnInit {
 
   constructor(
     private accountService: AccountService,
+    private globalVars: GlobalVarsService,
     private signingService: SigningService,
     private identityService: IdentityService,
   ) { }
@@ -36,7 +38,7 @@ export class TestSignComponent implements OnInit {
 
   finishFlow(signatureHex?: string): void {
     this.identityService.login({
-      channels: this.accountService.getChannels(),
+      channel: this.accountService.getActiveChannel(this.globalVars.hostname),
       signatureHex,
     });
   }

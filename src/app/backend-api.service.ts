@@ -3,8 +3,7 @@ import {HttpClient} from '@angular/common/http';
 import {Observable, of} from 'rxjs';
 import {catchError, map} from 'rxjs/operators';
 import {environment} from '../environments/environment';
-import {CryptoService} from './crypto.service';
-import {GlobalVarsService} from './global-vars.service';
+import {AccountService} from './account.service';
 
 export class ProfileEntryResponse {
   Username: string | null = null;
@@ -25,8 +24,7 @@ export class BackendAPIService {
 
   constructor(
     private httpClient: HttpClient,
-    private cryptoService: CryptoService,
-    private globalVars: GlobalVarsService,
+    private accountService: AccountService,
   ) { }
 
   post(path: string, body: any): Observable<any> {
@@ -80,7 +78,7 @@ export class BackendAPIService {
   ): Observable<{bodyJson: string, signature: string} | null> {
 
     // A stub for now
-    const wallet : object | null = this.cryptoService.getWallet(this.globalVars.hostname);
+    const wallet : object | null = this.accountService.getWallet();
     if (wallet === null) {
       return of(null)
     }

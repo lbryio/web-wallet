@@ -13,15 +13,14 @@ TODO - Unused for now. Revamp this page to be a channel picker for logging in
   Wallet Sync Login redirects to here, like load-seed did. Now we choose which account to log in with.
   -->
 
-  <div class="d-flex flex-column" *ngIf="allAccountNames.length">
+  <div class="d-flex flex-column" *ngIf="hasChannels">
     <ul class="list-group mt-7px mb-30px saved-seeds-list">
       <span class="saved-seeds-header d-flex align-items-center"><span>Select an account</span></span>
       <div class="saved-seeds-scroll">
-        <li *ngFor="let item of allAccountNames | keyvalue" class="list-group-item list-group-item-action cursor-pointer saved-seed" (click)="selectAccount(item.key)">
+        <li *ngFor="let item of allChannels | keyvalue" class="list-group-item list-group-item-action cursor-pointer saved-seed" (click)="selectAccount(item.key)">
           <div class="w-100">
-            <div *ngIf="!item.value" class="text-truncate">{{ item.key }}&hellip;</div>
             <div *ngIf="item.value" class="d-flex align-items-center">
-              <div class="text-truncate">{{ item.value }}</div>
+              <div class="text-truncate">{{ item.value.handle }}</div>
             </div>
           </div>
         </li>

@@ -38,10 +38,19 @@ export interface PrivateAccountInfo {
 // can be sent to the app
 export interface PublicChannelInfo {
   // TODO - add more useful stuff
+  claimId: string;
+  handle: string;
   pubKeyAddress: string;
-  network: Network;
-  accessLevel: AccessLevel;
-  accessLevelHmac: string;
+
+  // Don't care about sending the hmac-verifiable accessLevel to the app for it
+  // to send back, as DeSo did. I don't get it, it's overly complicated. We can
+  // just check the permissions based on what's in localStorage.
+  //
+  // Though, maybe this was for the sake of Safari where localStorage doesn't
+  // work? We'll see I guess.
+  //
+  // accessLevel: AccessLevel;
+  // accessLevelHmac: string;
 }
 
 export enum AccessLevel {
@@ -59,4 +68,10 @@ export enum AccessLevel {
 
   // Node can sign all transactions without approval
   Full = 4,
+}
+
+export enum ActionType {
+  Action = 0,
+  Transaction = 1,
+  // TODO - probably gets a lot more detailed than this
 }

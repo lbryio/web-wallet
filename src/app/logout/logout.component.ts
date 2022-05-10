@@ -33,7 +33,7 @@ export class LogoutComponent implements OnInit {
 
   onSubmit(): void {
     // We set the accessLevel for the logged out user to None.
-    this.accountService.resetAccessLevels(this.globalVars.hostname);
+    this.accountService.appLogout(this.globalVars.hostname);
     // We reset the seed encryption key so that all existing accounts, except
     // the logged out user, will regenerate their encryptedSeedHex. Without this,
     // someone could have reused the encryptedSeedHex of an already logged out user.
@@ -43,7 +43,7 @@ export class LogoutComponent implements OnInit {
 
   finishFlow(): void {
     this.identityService.login({
-      channels: this.accountService.getChannels(),
+      channel: this.accountService.getActiveChannel(this.globalVars.hostname),
     });
   }
 

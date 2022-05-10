@@ -1,5 +1,6 @@
 import {BackendAPIService} from '../backend-api.service';
 import {Component, OnInit} from '@angular/core';
+import {AccountService} from '../account.service';
 import {CryptoService} from '../crypto.service';
 import {GlobalVarsService} from '../global-vars.service';
 import {Router} from '@angular/router';
@@ -25,6 +26,7 @@ export class LogInWalletComponent implements OnInit {
   constructor(
     private backendApi: BackendAPIService,
     private cryptoService: CryptoService,
+    private accountService: AccountService,
     public globalVars: GlobalVarsService,
     private router: Router,
   ) { }
@@ -73,7 +75,7 @@ export class LogInWalletComponent implements OnInit {
           return
         }
 
-        this.cryptoService.putWallet(this.globalVars.hostname, wallet);
+        this.accountService.walletLogin(wallet);
 
         // Clear the form
         this.loginUsername = '';
@@ -90,18 +92,16 @@ export class LogInWalletComponent implements OnInit {
   // Paste Wallet (temporary measure for initial version)
 
   getWalletDumpInitial() {
-    const wallet : object | null = this.cryptoService.getWallet(this.globalVars.hostname);
+    const wallet : object | null = this.accountService.getWallet();
     return JSON.stringify(wallet, null, 2) || ""
   }
 
   loginWithWalletDump(): void {
     const walletStr = (<HTMLInputElement>document.getElementById("wallet-dump")).value;
     const wallet = JSON.parse(walletStr)
-    this.cryptoService.putWallet(this.globalVars.hostname, wallet);
+    this.accountService.walletLogin(wallet);
 
-    throw "fix me"
-    // For now, we'll just pick the first channel in the wallet and log right in
-    // this.router.navigate(['/', RouteNames.LOG_IN_APP], {queryParamsHandling: 'merge'});
+    this.router.navigate(['/', RouteNames.LOG_IN_APP], {queryParamsHandling: 'merge'});
   }
 
 }

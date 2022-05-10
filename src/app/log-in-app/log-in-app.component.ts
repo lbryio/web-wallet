@@ -2,6 +2,7 @@ import {Component, OnInit} from '@angular/core';
 import {AccountService} from '../account.service';
 import {IdentityService} from '../identity.service';
 import {GlobalVarsService} from '../global-vars.service';
+import {PublicChannelInfo} from '../../types/identity';
 
 @Component({
   selector: 'app-log-in-app',
@@ -9,7 +10,8 @@ import {GlobalVarsService} from '../global-vars.service';
   styleUrls: ['./log-in-app.component.scss']
 })
 export class LogInAppComponent implements OnInit {
-  allAccountNames: {[key: string]: string} = {};
+  allChannels: {[key: string]: PublicChannelInfo} = {};
+  hasChannels: boolean = false;
 
   constructor(
     private accountService: AccountService,
@@ -18,15 +20,15 @@ export class LogInAppComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    // TODO - Will hopefully be channel claim IDs but I don't know what will be available in reality
-    // this.allAccountNames = ...
+    this.allChannels = this.accountService.getChannels()
+    this.hasChannels = Object.keys(this.allChannels).length > 0
   }
 
-  selectAccount(accountName: string): void {
-    this.accountService.setAccessLevel(accountName, this.globalVars.hostname, this.globalVars.accessLevelRequest);
+  selectAccount(channelClaimId: string): void {
+    this.accountService.setAccessCurrentChannel(this.globalVars.hostname, channelClaimId)
+
     this.identityService.login({
-      channels: this.accountService.getChannels(),
-      accountNameAdded: accountName,
+      channel: this.accountService.getActiveChannel(this.globalVars.hostname),
       signedUp: false
     });
   }

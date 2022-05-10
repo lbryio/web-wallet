@@ -67,6 +67,9 @@ export class ApproveComponent implements OnInit {
       this.publicKey = this.base58KeyCheck(this.transaction.publicKey);
 
       this.generateTransactionDescription();
+      /*
+        TODO this.accountService.getActiveChannelAccessLevel
+      */
     });
   }
 
@@ -81,6 +84,10 @@ export class ApproveComponent implements OnInit {
     const seedHex = ""
     const signedTransactionHex = this.signingService.signTransaction(seedHex, this.transactionHex);
     this.finishFlow(signedTransactionHex);
+    */
+
+    /*
+      TODO this.accountService.setAccessLevel if people want to keep allowing the action
     */
   }
 

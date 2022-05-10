@@ -18,7 +18,6 @@ export class SignUpComponent implements OnInit, OnDestroy {
   seedCopied = false;
   mnemonicCheck = '';
   extraTextCheck = '';
-  accountNameAdded = '';
 
   // Advanced tab
   showMnemonicError = false;
@@ -89,10 +88,10 @@ export class SignUpComponent implements OnInit, OnDestroy {
     const extraText = this.extraTextCheck;
     const keychain = this.cryptoService.mnemonicToKeychain(mnemonic, extraText);
 
-    this.accountNameAdded = this.accountService.addUser(keychain, mnemonic, extraText, network);
+    const accountNameAdded = this.accountService.addUser(keychain, mnemonic, extraText, network);
 
     this.accountService.setAccessLevel(
-      this.accountNameAdded, this.globalVars.hostname, this.globalVars.accessLevelRequest);
+      accountNameAdded, this.globalVars.hostname, this.globalVars.accessLevelRequest);
 
     this.login();
     */
@@ -106,8 +105,7 @@ export class SignUpComponent implements OnInit, OnDestroy {
 
   login(): void {
     this.identityService.login({
-      channels: this.accountService.getChannels(),
-      accountNameAdded: this.accountNameAdded,
+      channel: this.accountService.getActiveChannel(this.globalVars.hostname),
       signedUp: true,
     });
   }
