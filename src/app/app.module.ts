@@ -18,7 +18,6 @@ import { LogInAppComponent } from './log-in-app/log-in-app.component';
 import {HttpClientModule} from '@angular/common/http';
 import { ApproveComponent } from './approve/approve.component';
 import { ErrorCallbackComponent } from './error-callback/error-callback.component';
-import { NgxIntlTelInputModule } from 'ngx-intl-tel-input';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { TestSignComponent } from './test-sign/test-sign.component';
 import { TestSignTransactionComponent } from './test-sign-transaction/test-sign-transaction.component';
@@ -46,7 +45,6 @@ import { LogInWalletComponent } from './log-in-wallet/log-in-wallet.component'
     AppRoutingModule,
     FormsModule,
     ReactiveFormsModule,
-    NgxIntlTelInputModule,
     MatFormFieldModule,
     MatTooltipModule,
   ],

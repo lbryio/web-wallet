@@ -37,8 +37,6 @@
     "jsonwebtoken": "^8.5.1",
     "key-encoder": "^2.0.3",
     "ngx-bootstrap": "^6.2.0",
-    "ngx-cookie": "^5.0.2",
-    "ngx-intl-tel-input": "^3.1.1",
     "readable-stream": "^3.6.0",
     "reflect-metadata": "^0.1.13",
     "rxjs": "~6.6.0",
