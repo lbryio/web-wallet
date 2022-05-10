@@ -7,6 +7,7 @@ export const environment = {
   hostname: 'localhost:4201',
   nodeHostname: 'node.deso.org',  // TODO deleteme
   walletSyncHostname: 'localhost:8091',
+  hubHostname: '', // TODO put me in a config file, or make this whole file a config file
 };
 
 /*
