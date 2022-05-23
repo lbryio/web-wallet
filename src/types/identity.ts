@@ -6,6 +6,10 @@ export enum AddressType {
   SingleAddress = "single-address",
 }
 
+// The `ledger` field of accounts in a wallet (or PrivateAccountInfo).
+// TODO - Rename this to "Ledger" to distinguish from `lbry.networks`,
+//   particularly since the ledger values are different from the
+//   `lbry.networks` field names.
 export enum Network {
   MainNet = "lbc_mainnet",
   TestNet = "lbc_testnet",
