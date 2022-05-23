@@ -28,7 +28,7 @@
     "base64-js": "^1.5.1",
     "bip32": "^2.0.6",
     "bip39": "^3.0.3",
-    "bitcoinjs-lib": "github:lbryio/bitcoinjs-lib#a1c5104f4a892a775b2d97b9fc88a1ba5b17403e",
+    "bitcoinjs-lib": "github:lbryio/bitcoinjs-lib#ae14ef1355d2d8bb3e9aca98a01201d279e085bf",
     "crypto-browserify": "^3.12.0",
     "ecpair": "^1.0.1",
     "elliptic": "^6.5.4",
