@@ -88,6 +88,8 @@ export class SignUpComponent implements OnInit, OnDestroy {
     // specific things that I figure we won't want to forget. This is just
     // a guide for the future when we tackle signup.
 
+    // TODO Don't use this.globalVars.network here, use the network specified
+    // in the relevant account.ledger (assuming we even really need network)
     const network = this.globalVars.network;
     const mnemonic = this.mnemonicCheck;
     const extraText = this.extraTextCheck;

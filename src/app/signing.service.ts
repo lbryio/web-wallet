@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import KeyEncoder from 'key-encoder';
+import {GlobalVarsService} from './global-vars.service';
 import * as jsonwebtoken from 'jsonwebtoken';
 
 import * as bip32 from 'bip32';
@@ -8,6 +9,7 @@ import * as bs58check from 'bs58check'
 import * as lbry from 'bitcoinjs-lib' // TODO - package recommends browserify, which I did not do here. This works, but maybe there's good reason to browserify?
 import * as ecpair from 'ecpair'; // TODO - required acorn-class-fields for this version of Angular's webpack to accept it. see extend-acorn.js.
 
+// TODO deleteme once I remove the last use of this
 const NETWORK = lbry.networks.mainnet
 
 @Injectable({
@@ -15,7 +17,9 @@ const NETWORK = lbry.networks.mainnet
 })
 export class SigningService {
 
-  constructor() { }
+  constructor(
+    private globalVars: GlobalVarsService,
+  ) { }
 
   // this should be audited and go into a library. hobbled this together from
   // code in bitcoinjs-lib.
@@ -52,7 +56,9 @@ export class SigningService {
   */
 
   signPSBT(psbtHex: string, nonWitnessUtxoHexes: string[], signingKey: Buffer): string {
-    const keyPair = ecpair.ECPair.fromPrivateKey(signingKey, { network: NETWORK })
+    // TODO Don't use this.globalVars.network here, use the network specified
+    // in the relevant account.ledger (assuming we even really need network)
+    const keyPair = ecpair.ECPair.fromPrivateKey(signingKey, { network: this.globalVars.network })
     const nonWitnessUtxos = nonWitnessUtxoHexes.map(h => Buffer.from(h, 'hex'))
     const psbt = lbry.Psbt.fromHex(psbtHex)
 

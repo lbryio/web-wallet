@@ -260,6 +260,8 @@ export class ApproveComponent implements OnInit {
     // TODO
     throw "replace all of this transaction parsing and checking with bitcoinjs-lib."
     return ""
+    // TODO Don't use this.globalVars.network here, use the network specified
+    // in the relevant account.ledger (assuming we even really need network)
     // const prefix = CryptoService.PUBLIC_KEY_PREFIXES[this.globalVars.network as Network].deso;
     // return bs58check.encode(Buffer.from([...prefix, ...keyBytes]));
   }
