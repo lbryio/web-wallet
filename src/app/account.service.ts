@@ -48,11 +48,7 @@ export class AccountService {
 
   localStorage["channels"] = {
     // There can be multiple channels
-    "<channel-claim-ids>": {
-      "claimId": "<channel-claim-id>",
-      "handle": "<channel-handle>",
-      "pubKeyAddress": "<channel-pub-key-address>",
-    }
+    "<channels>": PrivateChannelInfo,
   }
   */
 
