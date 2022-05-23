@@ -81,6 +81,11 @@ export class AccountService {
     localStorage.setItem(AccountService.walletStorageKey, JSON.stringify(walletStore));
   }
 
+  // TODO - PrivateAccountInfo should just contain a bip32 node and an
+  // "address" (account ID) that it generates when reading from storage. It
+  // wouldn't write these values back to storage, they're a function of the
+  // data already there. It would clean up the code by removing the need for
+  // bip32FromAccount, getAddress, and getAddressFromBip32.
   public getAccounts(): PrivateAccountInfo[] {
     const wallet = this.getWallet()
     if (wallet === null) {
