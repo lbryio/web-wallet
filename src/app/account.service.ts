@@ -1,7 +1,14 @@
 import {Injectable} from '@angular/core';
 import {GlobalVarsService} from './global-vars.service';
 import {HubService} from './hub.service';
-import {AccessLevel, ActionType, PrivateAccountInfo, PublicChannelInfo} from '../types/identity';
+import {SigningService} from './signing.service';
+import {
+  AccessLevel,
+  ActionType,
+  PrivateAccountInfo,
+  PrivateChannelInfo,
+  PublicChannelInfo,
+} from '../types/identity';
 
 @Injectable({
   providedIn: 'root'
@@ -13,7 +20,7 @@ export class AccountService {
 
   constructor(
     private globalVars: GlobalVarsService,
-    private hubService: HubService,
+    private signingService: SigningService,
   ) { }
 
   /*
@@ -108,26 +115,75 @@ export class AccountService {
     localStorage.setItem(AccountService.channelsStorageKey, JSON.stringify(null));
   }
 
-  public updateChannels() {
-    let xPubs: string[] = this.getAccounts().map(account => account.public_key)
-    let channels: {[key: string]: PublicChannelInfo} = {};
-    for (const hubChannel of this.hubService.getChannels(xPubs)) {
-      channels[hubChannel.claimId] = {
-        claimId: hubChannel.claimId,
-        handle: hubChannel.handle,
-        pubKeyAddress: hubChannel.pubKeyAddress,
-        // TODO -- more fields?
+  // TODO - This function is async due to the http call, so now I have to
+  // rethink the guarantees about login state being based on the data being in
+  // localStorage.
+  //
+  // TODO error handling?
+  public updateChannels(): Observable<null> {
+    // Where we accumulate the channels for all accounts through all of the
+    // recursions
+    let channels: {[key: string]: {[key: string]: PrivateChannelInfo}} = {};
+
+    // Return this so the caller can do something pending this completing
+    // (perhaps keep the login state orderly)
+    // TODO - there's got to be a better way.
+    return new Observable(subscriber => {
+      accumulateChannelsForAccounts(accounts: PrivateAccountInfo[]) {
+        if(!accounts.length){
+          // We got the channels for all accounts. Give it to the subscriber so we can add it to local storage.
+          subscriber.next(channels)
+          subscriber.complete()
+          return
+        }
+        this.signingService.getChannelsForAccount(accounts[0])
+        .pipe(
+          map(acountChannels => {
+            const accountId = this.signingService.getAddress(account)
+            // `acountChannels` is an array. We want the same data in an object,
+            // keyed by the pubKey field. 
+            channelsByPubkey = Object.fromEntries(
+              acountChannels.map(channel => [channel.pubKeyId, channel])
+            )
+            channels[accountId] = channelsByPubkey
+
+            // Call again, omitting the account we just handled.
+            accumulateChannelsForAccount(accounts.slice(1))
+          })
+        )
       }
-    }
-    localStorage.setItem(AccountService.channelsStorageKey, JSON.stringify(channels));
+
+      // Kick it off with all accounts.
+      accumulateChannelsForAccounts(this.getAccounts())
+    }).pipe(
+      map(channels => {
+        localStorage.setItem(AccountService.channelsStorageKey, JSON.stringify(channels));
+        return null
+      })
+    ).subscribe() // We want to actually kick off these actions if this function is called (see pipe vs subscribe)
   }
 
   public hasChannels() {
     return !!localStorage.getItem(AccountService.channelsStorageKey);
   }
 
-  public getChannels() {
+  public getChannelsPrivate(): {[key: string]: PrivateChannelInfo} {
     return JSON.parse(localStorage.getItem(AccountService.channelsStorageKey) || '{}');
+  }
+
+  // returns {accountId: [PublicChannelInfo]}
+  public getChannelsPublic(): {[key: string]: PublicChannelInfo} {
+    const privateChannels: {[key: string]: PrivateChannelInfo} = this.getChannelsPrivate()
+    const publicChannels: {[key: string]: PublicChannelInfo} = {}
+    for(const accountId of Object.keys(privateChannels)) {
+      publicChannels[accountId] = {
+        claimId: privateChannels[accountId].claimId,
+        name: privateChannels[accountId].name,
+        normalizedName: privateChannels[accountId].normalizedName,
+        pubKeyId: privateChannels[accountId].pubKeyId,
+      }
+    }
+    return publicChannels
   }
 
   private clearAccess() {
@@ -145,7 +201,7 @@ export class AccountService {
 
   public getActiveChannel(hostname: string): PublicChannelInfo | null {
     // TODO - and actually, this maybe only needs to happen on startup. could save in a local variable.
-    const channels = this.getChannels()
+    const channels = this.getChannelsPublic()
     const access = JSON.parse(localStorage.getItem(AccountService.accessStorageKey) || '{}');
 
     if (access[hostname]) {

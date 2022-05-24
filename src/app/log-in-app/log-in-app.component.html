@@ -12,7 +12,7 @@
         <li *ngFor="let item of allChannels | keyvalue" class="list-group-item list-group-item-action cursor-pointer saved-seed" (click)="selectAccount(item.key)">
           <div class="w-100">
             <div *ngIf="item.value" class="d-flex align-items-center">
-              <b>{{ item.value.handle }}</b>
+              <b>{{ item.value.name }}</b>
               &nbsp;
               &nbsp;
               <i>(#{{ item.value.claimId }})</i>

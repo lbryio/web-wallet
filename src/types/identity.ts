@@ -39,12 +39,22 @@ export interface PrivateAccountInfo {
     seed: string,
 }
 
+export interface PrivateChannelInfo {
+  // TODO - add more useful stuff
+  claimId: string;
+  name: string;
+  normalizedName: string;
+  pubKeyId: string;
+  signingKey: string;
+}
+
 // can be sent to the app
 export interface PublicChannelInfo {
   // TODO - add more useful stuff
   claimId: string;
-  handle: string;
-  pubKeyAddress: string;
+  name: string;
+  normalizedName: string;
+  pubKeyId: string;
 
   // Don't care about sending the hmac-verifiable accessLevel to the app for it
   // to send back, as DeSo did. I don't get it, it's overly complicated. We can

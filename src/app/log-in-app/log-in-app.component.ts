@@ -20,7 +20,7 @@ export class LogInAppComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    this.allChannels = this.accountService.getChannels()
+    this.allChannels = this.accountService.getChannelsPublic()
     this.hasChannels = Object.keys(this.allChannels).length > 0
   }
 
